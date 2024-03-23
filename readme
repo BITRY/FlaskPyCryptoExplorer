@@ -1,0 +1,34 @@
+Hello
+
+
+This is my own Crypto Explorer woten in python using Flask libarys and websocket to stream new blocks.
+
+DEMO  ---->   explorernew.prux.info
+
+
+Is still in work, iam waiting still to get synced on my DEMO site to work on then on last part, is only then to thes sync stop and add next blocks if new block is there. 
+So may 98% finished of this Project.  may later we need to have better db management for faster Frontend loads, or we add chaching the the sites. 
+
+
+
+Install and RUN  with follow commands:
+
+you need a virtual env. 
+
+
+cd /projectDirectory
+
+sudo apt-get install python-pip
+pip install virtualenv
+virtualenv exp
+source exp/bin/activate
+
+
+YOU need to "pip install"  follow libarys
+
+
+in work.....
+
+
+
+

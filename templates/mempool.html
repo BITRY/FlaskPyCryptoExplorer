@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRUX Live Block Explorer</title>
+    <!-- Add your CSS styles or link to a stylesheet here -->
+    <style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark text color */
+    margin: 20px auto 0; /* 20px top margin, center horizontally */
+    padding: 0;
+    max-width: 1200px;
+}
+
+        header {
+            background-color: #3498db; /* Blue background */
+            color: #ecf0f1; /* Light text color */
+            padding: 6px 0;
+            text-align: left;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        img {
+            width: 50px; /* Adjusted width */
+            height: 50px; /* Adjusted height */
+            margin-right: 5px; /* Adjusted margin */
+        }
+
+        nav {
+            background-color: #2c3e50; /* Darker blue background */
+            padding: 8px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #ecf0f1; /* Light link color */
+            font-weight: bold;
+            font-size: 0.6em;
+        }
+
+        div.container {
+            margin: 6px;
+            max-width: 1200px; 
+            background-color: #ecf0f1; /* Light gray background */
+            padding: 6px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 0.9em;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        font-size: 0.9em;
+    }
+
+    th, td {
+        border: 1px solid #bdc3c7; /* Lighter gray border */
+        padding: 5px; /* Adjusted padding for a more compact look */
+        text-align: left;
+        font-size: 0.7em;
+    }
+
+    th {
+        background-color: #3498db;
+        color: #ecf0f1;
+    }
+
+    h2 {
+        color: #333;
+        font-size: 0.9em;
+    }
+
+        h3 {
+            font-size: 0.9em; /* Smaller heading */
+        }
+
+        a {
+            color: #0077cc; /* Blue color for links */
+        }
+
+        .search-container {
+            position: absolute;
+            top: 80px; /* Adjusted top position */
+            right: 10px; /* Adjusted right position */
+            height: 50px;
+            width: calc(100% - 20px);
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            width: 70%; /* Adjusted width */
+            padding: 8px; /* Adjusted padding */
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 30%; /* Adjusted width */
+            padding: 8px; /* Adjusted padding */
+            box-sizing: border-box;
+            background-color: #0077cc;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005580;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Handle the 'reload' event
+        socket.on('reload', function() {
+            // Reload the page, bypassing the cache
+            console.log("Reloading page...");
+            location.reload(true);
+        });
+    </script>
+</head>
+<body>
+
+
+
+<!-- Logo, Title, and Menubar -->
+<header>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 50px; height: 50px;">
+    <h1 style="display: inline-block; margin-left: 50px;">PRUX Block Explorer</h1>
+    <!-- Menubar (You can customize this based on your needs) -->
+</header>
+
+
+
+
+<!-- Menubar -->
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/mempool">Live Mempool View</a></li>
+        <li><a href="/coindistribution">Top 500</a></li>
+        
+        <!-- Add more menu items as needed -->
+
+    </ul>
+
+</nav>
+<div class="container" style="min-height: 100px; max-height: 1000px; max-weight: 600px; overflow-y: auto;">
+    <h2>PRUX Mempool Transactions</h2>
+
+    {% if transactions %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Size</th>
+                    <th>Fee</th>
+                    <th>Inputs</th>
+                    <th>Outputs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction['txid'][:9] + '...' + transaction['txid'][-9:] }}</td>
+                        <td>{{ transaction['size'] }}</td>
+                        <td>{{ transaction['fee'] }}</td>
+                        <td>
+                            <ul>
+                                {% for input in transaction['inputs'] %}
+                                    <li>{{ input['transaction_id'][:9] + '...' + input['transaction_id'][-9:] }} - Vout: {{ input['vout'] }} - Amount: {{ input['amount'] }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for output in transaction['outputs'] %}
+                                    <li>{{ output['receiver_address'] }} - Amount: {{ output['amount'] }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No transactions available in the mempool.</p>
+    {% endif %}
+</div>
+</body>
+</html>
+
