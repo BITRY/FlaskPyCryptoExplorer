@@ -1,13 +1,17 @@
 Hello
 
 
-This is my own Crypto Explorer woten in python using Flask libarys and websocket to stream new blocks.
+This is my own Crypto Explorer wroten in python using Flask libarys and websocket to stream new blocks.
 
 DEMO  ---->   explorernew.prux.info
 
 
-Is still in work, iam waiting still to get synced on my DEMO site to work on then on last part, is only then to thes sync stop and add next blocks if new block is there. 
-So may 98% finished of this Project.  may later we need to have better db management for faster Frontend loads, or we add chaching the the sites. 
+Is still in work, iam waiting still to get synced on my DEMO site to work on then on last part! 
+Is only then to the sync stop and add next blocks if new block is there.  
+So may 98% finished of this Project.
+May later we need to have better db management for faster Frontend loads, speed improvments, other explorer work with direct rpc connections. 
+I want to have at last all tx info in DB, not yet fin. 
+
 
 
 
@@ -29,6 +33,6 @@ YOU need to "pip install"  follow libarys
 
 in work.....
 
-
+You will find out if you try.
 
 
